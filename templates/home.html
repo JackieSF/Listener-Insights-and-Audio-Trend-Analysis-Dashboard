@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spotify Flask App</title>
+    <title>Vibevault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h1>Spotify Flask Integration</h1>
-    <p><a href="{{ url_for('login') }}">Login with Spotify</a></p>
+<body class="landing-page">
+    <div class="landing-container">
+        <h1>Welcome to Vibevault</h1>
+        <p>Your personalized music event insight hub.</p>
+        <a href="/home" class="start-button">Enter Dashboard</a>
+    </div>
 </body>
 </html>
