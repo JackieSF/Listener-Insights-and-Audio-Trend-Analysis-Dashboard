@@ -69,7 +69,7 @@ def generate_event_insight(event):
     - Who would enjoy this
     - Any age suggestions or advisories
     """
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
     response = model.generate_content(prompt)
     return response.text.strip()
 
@@ -91,3 +91,7 @@ def generate_customer_insight(customer):
     model = genai.GenerativeModel('gemini-pro')
     response = model.generate_content(prompt)
     return response.text.strip()
+
+models = genai.list_models()
+for m in models:
+    print(m.name)

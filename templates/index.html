@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vibevault Insights Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -11,31 +12,33 @@
   </header>
 
   <main>
+    <!-- Overview Section Placeholder -->
     <section id="overview">
       <div class="block">
         <h2>Top 10 Songs</h2>
-        <p>Coming soon with Gemini-powered insights.</p>
+        <p>Coming soon with Gemini insights and live Spotify data.</p>
       </div>
       <div class="block">
         <h2>Top 10 Artists</h2>
-        <p>Coming soon with Gemini-powered insights.</p>
+        <p>Coming soon with Gemini insights and live Spotify data.</p>
       </div>
       <div class="block">
-        <h2>Most Popular Genres by Region</h2>
-        <p>Coming soon with mock and Spotify data.</p>
+        <h2>Popular Genres by Region</h2>
+        <p>Coming soon with Gemini insights and live Spotify data.</p>
       </div>
     </section>
 
+    <!-- Events Section -->
     <section id="events">
-      <h2>Trending Events</h2>
+      <h2>Events</h2>
       <div id="trending-events" class="event-list">
-        <!-- Event cards will be populated here by JS -->
+        <!-- Events dynamically inserted by script.js -->
       </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Vibevault</p>
+    &copy; 2025 Vibevault. All rights reserved.
   </footer>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>

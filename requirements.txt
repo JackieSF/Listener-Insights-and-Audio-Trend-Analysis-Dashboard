@@ -1,0 +1,18 @@
+📦 Required Packages (requirements.txt)
+To make sure everything runs smoothly, your requirements.txt file should include the following libraries:
+
+Flask — the web framework powering the app
+
+python-dotenv — for securely loading your .env file
+
+google-generativeai — to connect to the Gemini AI API
+
+Your requirements.txt file should include:
+
+flask
+python-dotenv
+google-generativeai
+
+To install these, just run the following in your terminal (after setting up your virtual environment):
+
+pip install -r requirements.txt

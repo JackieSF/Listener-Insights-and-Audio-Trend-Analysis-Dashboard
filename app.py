@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 # Configure Gemini
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
 
 @app.route('/')
 def home():
