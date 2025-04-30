@@ -2,8 +2,11 @@ from flask import Flask, render_template, jsonify, request
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
-from inventory import inventory
 from ai import customers
+from inventory import inventory 
+import random
+import uuid
+
 
 load_dotenv()
 
@@ -14,7 +17,11 @@ app = Flask(__name__)
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
 
-@app.route('/')
+@app.route("/")
+def landing():
+    return render_template("landing.html")
+
+@app.route('/home')
 def home():
     return render_template("index.html")
 
@@ -47,6 +54,12 @@ def get_event_insight(event_id):
 
     response = model.generate_content(prompt)
     return jsonify({'insight': response.text})
+
+@app.route("/api/curate_audience/<event_id>")
+def curate_audience(event_id):
+    # For now, just return 3 random customers
+    sample = random.sample(customers, min(3, len(customers)))
+    return jsonify(sample)
 
 if __name__ == '__main__':
     app.run(debug=True)

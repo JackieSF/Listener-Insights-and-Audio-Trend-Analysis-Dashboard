@@ -24,14 +24,40 @@ function fetchEvents() {
           </div>
           <button class="insight-button" data-id="${event.id}">Vibe Check</button>
           <div class="insight-output" id="insight-${event.id}"></div>
+          <button class="curate-button" data-id="${event.id}">Curate Audience</button>
+          <div class="audience-output" id="audience-${event.id}"></div>
         `;
 
         trendingContainer.appendChild(eventCard);
       });
 
       setupInsightButtons();
+      setupCurateButtons(); 
+
     });
 }
+
+function setupCurateButtons() {
+  const buttons = document.querySelectorAll(".curate-button");
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      const eventId = button.getAttribute("data-id");
+      const audienceBox = document.getElementById(`audience-${eventId}`);
+      audienceBox.innerHTML = "Finding potential audience...";
+
+      fetch(`/api/curate_audience/${eventId}`)
+        .then(response => response.json())
+        .then(data => {
+          const list = data.map(c => `<li>${c.name} - Likes ${c.top_genres.join(', ')}</li>`).join('');
+          audienceBox.innerHTML = `<ul>${list}</ul>`;
+        })
+        .catch(() => {
+          audienceBox.innerHTML = "Failed to curate audience.";
+        });
+    });
+  });
+}
+
 
 // Handle Gemini insight requests
 function setupInsightButtons() {
