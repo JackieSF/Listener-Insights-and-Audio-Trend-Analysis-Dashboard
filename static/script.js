@@ -100,17 +100,21 @@ function setupInsightButtons() {
           .then(response => response.json())
           .then(data => {
             const insightText = data.insight;
-            const sections = insightText.split(/\*\*(.*?)\*\*/); // Split around bold titles
+            const sections = insightText.split(/\*\*(.*?)\*\*/); // Splits text by bolded sections
 
             let formatted = "<ul>";
             for (let i = 1; i < sections.length; i += 2) {
-              const title = sections[i].trim();
-              const body = sections[i + 1]?.trim() || "";
-              formatted += `<li><strong>${title}:</strong> ${body}</li>`;
+              let title = sections[i].trim().replace(/[:：]+$/, "");
+              let body = sections[i + 1]?.trim().replace(/^\*|\*$/g, "").trim(); 
+
+              if (body && body !== "*") {
+                formatted += `<li><strong>${title}:</strong> ${body}</li>`;
+              }
             }
             formatted += "</ul>";
 
             insightBox.innerHTML = `<div class="insight-text">${formatted}</div>`;
+
           })
           .catch(err => {
             insightBox.innerHTML = "Error fetching insight.";
