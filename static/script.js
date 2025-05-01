@@ -99,7 +99,18 @@ function setupInsightButtons() {
         fetch(`/api/event_insight/${eventId}`)
           .then(response => response.json())
           .then(data => {
-            insightBox.innerHTML = `<div class="insight-text">${data.insight}</div>`;
+            const insightText = data.insight;
+            const sections = insightText.split(/\*\*(.*?)\*\*/); // Split around bold titles
+
+            let formatted = "<ul>";
+            for (let i = 1; i < sections.length; i += 2) {
+              const title = sections[i].trim();
+              const body = sections[i + 1]?.trim() || "";
+              formatted += `<li><strong>${title}:</strong> ${body}</li>`;
+            }
+            formatted += "</ul>";
+
+            insightBox.innerHTML = `<div class="insight-text">${formatted}</div>`;
           })
           .catch(err => {
             insightBox.innerHTML = "Error fetching insight.";
