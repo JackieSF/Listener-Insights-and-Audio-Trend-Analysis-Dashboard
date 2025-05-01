@@ -67,31 +67,10 @@ def generate_event_insight(event):
     - Who the target audience is
     - What kind of music and vibe to expect
     - Who would enjoy this
-    - Any age suggestions or advisories
+    - Any age restriction suggestions or parental advisories
     """
     model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
     response = model.generate_content(prompt)
     return response.text.strip()
 
-def generate_customer_insight(customer):
-    prompt = f"""
-    Analyze this customer's preferences and generate a music vibe profile:
 
-    Name: {customer['name']}
-    Top Genres: {', '.join(customer['top_genres'])}
-    Top Artists: {', '.join(customer['top_artists'])}
-    Recently Played: {', '.join([track['name'] + ' by ' + track['artist'] for track in customer['recent_tracks']])}
-    Location: {customer['location']}
-
-    Include:
-    - Summary of musical taste
-    - Preferred vibe
-    - Suggested upcoming events
-    """
-    model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(prompt)
-    return response.text.strip()
-
-models = genai.list_models()
-for m in models:
-    print(m.name)

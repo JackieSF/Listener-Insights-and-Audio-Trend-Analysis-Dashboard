@@ -22,14 +22,26 @@ function fetchEvents() {
             ${event.genres.map(genre => `<span class="badge genre">${genre}</span>`).join('')}
             ${event.artists.map(artist => `<span class="badge artist">${artist}</span>`).join('')}
           </div>
-          <button class="insight-button" data-id="${event.id}">Vibe Check</button>
-          <div class="insight-output" id="insight-${event.id}"></div>
-          <button class="curate-button" data-id="${event.id}">Curate Audience</button>
-          <div class="audience-output" id="audience-${event.id}"></div>
+          <button class="toggle-button insight-button" data-id="${event.id}">
+            <span class="arrow">►</span> Vibe Check
+          </button>
+          <div class="insight-output" id="insight-${event.id}" style="display: none;"></div>
+
+          <button class="toggle-button curate-button" data-id="${event.id}">
+            <span class="arrow">►</span> Curate Audience
+          </button>
+          <div class="audience-output" id="audience-${event.id}" style="display: none;"></div>
         `;
 
         trendingContainer.appendChild(eventCard);
       });
+
+      // collapse insights 
+document.querySelectorAll(".close-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.parentElement.style.display = "none";
+  });
+});
 
       setupInsightButtons();
       setupCurateButtons(); 
@@ -43,17 +55,27 @@ function setupCurateButtons() {
     button.addEventListener("click", () => {
       const eventId = button.getAttribute("data-id");
       const audienceBox = document.getElementById(`audience-${eventId}`);
-      audienceBox.innerHTML = "Finding potential audience...";
+      const arrow = button.querySelector(".arrow");
 
-      fetch(`/api/curate_audience/${eventId}`)
-        .then(response => response.json())
-        .then(data => {
-          const list = data.map(c => `<li>${c.name} - Likes ${c.top_genres.join(', ')}</li>`).join('');
-          audienceBox.innerHTML = `<ul>${list}</ul>`;
-        })
-        .catch(() => {
-          audienceBox.innerHTML = "Failed to curate audience.";
-        });
+      // Toggle visibility
+      if (audienceBox.style.display === "none") {
+        audienceBox.style.display = "block";
+        arrow.textContent = "▼"; 
+        audienceBox.innerHTML = "Finding potential audience...";
+
+        fetch(`/api/curate_audience/${eventId}`)
+          .then(response => response.json())
+          .then(data => {
+            const list = data.map(c => `<li>${c.name} - Likes ${c.top_genres.join(', ')}</li>`).join('');
+            audienceBox.innerHTML = `<ul>${list}</ul>`;
+          })
+          .catch(() => {
+            audienceBox.innerHTML = "Failed to curate audience.";
+          });
+      } else {
+        audienceBox.style.display = "none";
+        arrow.textContent = "►"; 
+      }
     });
   });
 }
@@ -66,18 +88,27 @@ function setupInsightButtons() {
     button.addEventListener("click", () => {
       const eventId = button.getAttribute("data-id");
       const insightBox = document.getElementById(`insight-${eventId}`);
-      insightBox.innerHTML = "Loading insight...";
+      const arrow = button.querySelector(".arrow");
 
-      fetch(`/api/event_insight/${eventId}`)
-        .then(response => response.json())
-        .then(data => {
-          insightBox.innerHTML = `
-            <div class="insight-text">${data.insight}</div>
-          `;
-        })
-        .catch(err => {
-          insightBox.innerHTML = "Error fetching insight.";
-        });
+      // Toggle visibility
+      if (insightBox.style.display === "none") {
+        insightBox.style.display = "block";
+        arrow.textContent = "▼";
+        insightBox.innerHTML = "Loading insight...";
+
+        fetch(`/api/event_insight/${eventId}`)
+          .then(response => response.json())
+          .then(data => {
+            insightBox.innerHTML = `<div class="insight-text">${data.insight}</div>`;
+          })
+          .catch(err => {
+            insightBox.innerHTML = "Error fetching insight.";
+          });
+      } else {
+        insightBox.style.display = "none";
+        arrow.textContent = "►";
+      }
     });
   });
 }
+
